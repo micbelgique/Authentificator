@@ -6,8 +6,9 @@
       "outputLocation": "dist",
       "appBuildCommand": "yarn build",
       "run": "yarn dev",
-      "appDevserverUrl": "http://localhost:5173"
+      "appDevserverUrl": "http://localhost:5173",
+      "appName": "authentificator-0822-swa",
+      "resourceGroupName": "Authentificator-0822-rg"
     }
   }
 }
-
