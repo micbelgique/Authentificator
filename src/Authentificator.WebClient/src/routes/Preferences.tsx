@@ -45,6 +45,11 @@ export default function Preferences() {
     navigate("/")
   }
 
+  const handleDisconnect = () => {
+    navigate("/")
+    setUserId("")
+  }
+
   if (userId === "") return <div>No User</div>
   if (isLoading) return <LinearProgress variant="indeterminate" />
 
@@ -78,6 +83,11 @@ export default function Preferences() {
             sx={{ mt: 1 }}
           >
             Submit
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="error" onClick={handleDisconnect}>
+            Disconnect
           </Button>
         </Grid>
       </Grid>
