@@ -9,5 +9,6 @@ namespace Authentificator.Models
         public Guid PersonId { get; set; }
         public string PersonGroupId { get; set; }
         public string FavouriteCoffee { get; set; } = "";
+        public string AvatarUrl { get; set; } = "";
     }
 }

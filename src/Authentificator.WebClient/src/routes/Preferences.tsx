@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   Grid,
@@ -12,19 +13,22 @@ import { useSnackbar } from "notistack"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import useSessionStorage from "../hooks/useSessionStorage"
+import User from "../models/user"
 import { getProfile, updateProfile } from "../services/api"
 
 export default function Preferences() {
   const [userId, setUserId] = useSessionStorage<string>("userId", "")
   const [favouriteCoffee, setFavouriteCoffee] = useState("")
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     if (userId) {
-      getProfile(userId).then(({ favouriteCoffee }) => {
-        setFavouriteCoffee(favouriteCoffee)
+      getProfile(userId).then((user) => {
+        setUser(user)
+        setFavouriteCoffee(user.favouriteCoffee)
         setIsLoading(false)
       })
     }
@@ -46,7 +50,12 @@ export default function Preferences() {
 
   return (
     <>
-      <Grid container direction="column" sx={{ mt: 0.2 }}>
+      <Grid container direction="row" spacing={4}>
+        <Grid item>
+          <Box sx={{ height: "10em", width: "10em" }}>
+            <img src={user?.avatarUrl} style={{ height: "auto", width: "100%" }} alt="Avatar" />
+          </Box>
+        </Grid>
         <Grid item>
           <FormControl fullWidth>
             <InputLabel id="favoutite-coffee-label">Favourite coffee</InputLabel>
@@ -61,9 +70,13 @@ export default function Preferences() {
               <MenuItem value={"cofee"}>Coffee</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="primary" onClick={handleSubmit} type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            type="submit"
+            sx={{ mt: 1 }}
+          >
             Submit
           </Button>
         </Grid>

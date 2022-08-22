@@ -45,10 +45,10 @@ namespace Authentificator.Functions
                 throw new Exception("Not enough good images");
             }
             await context.CallActivityAsync("RegisterOrchestration_AddFacesToPerson", (personGroupId, personId, filteredImages));
-
+            var avatarUrl = await context.CallActivityAsync<string>("RegisterOrchestration_CreateAvatar", userId);
             await Task.WhenAll(new[] {
                 context.CallActivityAsync("RegisterOrchestration_TrainPersonGroup", personGroupId),
-                context.CallActivityAsync("RegisterOrchestration_CreatePersonDB", (personGroupId, personId, userId))
+                context.CallActivityAsync("RegisterOrchestration_CreatePersonDB", (personGroupId, personId, userId, avatarUrl))
             });
 
 
@@ -101,8 +101,8 @@ namespace Authentificator.Functions
         [return: CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")]
         public static User CreatePersonDB([ActivityTrigger] IDurableActivityContext context, ILogger log)
         {
-            var (personGroupId, personId, userId) = context.GetInput<(string, Guid, Guid)>();
-            var newUser = new User { Id = userId, PersonId = personId, PersonGroupId = personGroupId };
+            var (personGroupId, personId, userId, avatarUrl) = context.GetInput<(string, Guid, Guid, string)>();
+            var newUser = new User { Id = userId, PersonId = personId, PersonGroupId = personGroupId, AvatarUrl = avatarUrl };
             return newUser;
 
         }
@@ -111,6 +111,11 @@ namespace Authentificator.Functions
         public static async Task TrainPersonGroup([ActivityTrigger] string personGroupId, ILogger log)
         {
             await Face.Train(personGroupId);
+        }
+        [FunctionName("RegisterOrchestration_CreateAvatar")]
+        public static string CreateAvatar([ActivityTrigger] string userId, ILogger log)
+        {
+            return $"https://avatars.dicebear.com/api/big-smile/{userId}.svg";
         }
 
         [FunctionName("RegisterOrchestration_HttpStart")]
