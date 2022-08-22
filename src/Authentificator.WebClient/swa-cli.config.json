@@ -1,0 +1,13 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "authentificator.web-client": {
+      "appLocation": ".",
+      "outputLocation": "dist",
+      "appBuildCommand": "yarn build",
+      "run": "yarn dev",
+      "appDevserverUrl": "http://localhost:5173"
+    }
+  }
+}
+

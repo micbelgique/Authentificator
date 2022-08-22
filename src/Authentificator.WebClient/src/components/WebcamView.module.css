@@ -1,0 +1,10 @@
+.WebcamScreen {
+  width: 800px;
+  max-width: 90vw;
+}
+
+@media only screen and (max-device-width: 500px) {
+  .WebcamScreen {
+    max-width: 90vw;
+  }
+}
