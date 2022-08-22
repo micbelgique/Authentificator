@@ -18,12 +18,6 @@ namespace Authentificator.Functions
 {
     public class UpdatePreferences
     {
-        private readonly ILogger<Identify> _logger;
-
-        public UpdatePreferences(ILogger<Identify> log)
-        {
-            _logger = log;
-        }
 
         [FunctionName("UpdatePreferences")]
         [return: CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")]

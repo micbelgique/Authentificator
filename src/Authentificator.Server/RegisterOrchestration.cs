@@ -38,8 +38,6 @@ namespace Authentificator.Functions
             var personId = await context.CallActivityAsync<Guid>("RegisterOrchestration_CreatePerson", (personGroupId, userId));
 
             var filteredImages = await context.CallActivityAsync<List<byte[]>>("RegisterOrchestration_FilteredImages", request.Pictures);
-            log.LogInformation($"Pictures : {request.Pictures.Count}");
-            log.LogInformation($"Filtered images: {filteredImages.Count}");
             if (filteredImages.Count < 3)
             {
                 throw new Exception("Not enough good images");
@@ -56,42 +54,41 @@ namespace Authentificator.Functions
         }
 
         [FunctionName("RegisterOrchestration_GetPersonGroupId")]
-        public static string GetPersonGroupId([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        public static string GetPersonGroupId([ActivityTrigger] IDurableActivityContext context)
         {
             return Environment.GetEnvironmentVariable("personGroupId");
         }
 
 
         [FunctionName("RegisterOrchestration_CreatePersonGroup")]
-        public static async Task CreatePersonGroup([ActivityTrigger] string personGroupId, ILogger log)
+        public static async Task CreatePersonGroup([ActivityTrigger] string personGroupId)
         {
             await Face.CreatePersonGroup(personGroupId);
         }
 
         [FunctionName("RegisterOrchestration_CreatePerson")]
-        public static async Task<Guid> CreatePerson([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        public static async Task<Guid> CreatePerson([ActivityTrigger] IDurableActivityContext context)
         {
             var (personGroupId, userId) = context.GetInput<(string, Guid)>();
             return await Face.CreatePerson(personGroupId, userId.ToString());
         }
 
         [FunctionName("RegisterOrchestration_CreateUserId")]
-        public static Guid CreateUserId([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        public static Guid CreateUserId([ActivityTrigger] IDurableActivityContext context)
         {
             return Guid.NewGuid();
         }
 
 
         [FunctionName("RegisterOrchestration_FilteredImages")]
-        public static async Task<List<byte[]>> FilterImages([ActivityTrigger] List<string> pictures, ILogger log)
+        public static async Task<List<byte[]>> FilterImages([ActivityTrigger] List<string> pictures)
         {
-            log.LogInformation($"Filter faces from {pictures.Count} pictures");
             var images = pictures.Select(p => Image.FromB64ToBytes(p)).ToList();
             return await Face.FilteredImages(images);
         }
 
         [FunctionName("RegisterOrchestration_AddFacesToPerson")]
-        public static async Task AddFacesToPerson([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        public static async Task AddFacesToPerson([ActivityTrigger] IDurableActivityContext context)
         {
             var (personGroupId, personId, filteredImages) = context.GetInput<(string, Guid, List<byte[]>)>();
             await Task.WhenAll(filteredImages.Select(f => Face.AddFaceToPerson(personGroupId, personId, f)));
@@ -99,7 +96,7 @@ namespace Authentificator.Functions
 
         [FunctionName("RegisterOrchestration_CreatePersonDB")]
         [return: CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")]
-        public static User CreatePersonDB([ActivityTrigger] IDurableActivityContext context, ILogger log)
+        public static User CreatePersonDB([ActivityTrigger] IDurableActivityContext context)
         {
             var (personGroupId, personId, userId, avatarUrl) = context.GetInput<(string, Guid, Guid, string)>();
             var newUser = new User { Id = userId, PersonId = personId, PersonGroupId = personGroupId, AvatarUrl = avatarUrl };
@@ -108,12 +105,12 @@ namespace Authentificator.Functions
         }
 
         [FunctionName("RegisterOrchestration_TrainPersonGroup")]
-        public static async Task TrainPersonGroup([ActivityTrigger] string personGroupId, ILogger log)
+        public static async Task TrainPersonGroup([ActivityTrigger] string personGroupId)
         {
             await Face.Train(personGroupId);
         }
         [FunctionName("RegisterOrchestration_CreateAvatar")]
-        public static string CreateAvatar([ActivityTrigger] string userId, ILogger log)
+        public static string CreateAvatar([ActivityTrigger] string userId)
         {
             return $"https://avatars.dicebear.com/api/big-smile/{userId}.svg";
         }

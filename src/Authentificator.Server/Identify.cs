@@ -18,13 +18,6 @@ namespace Authentificator.Functions
 {
     public class Identify
     {
-        private readonly ILogger<Identify> _logger;
-
-        public Identify(ILogger<Identify> log)
-        {
-            _logger = log;
-        }
-
         [FunctionName("Identify")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "picture" })]
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(IdentifyRequest))]

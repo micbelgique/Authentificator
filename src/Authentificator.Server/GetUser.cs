@@ -12,13 +12,6 @@ namespace Authentificator.Functions
 {
     public class GetUser
     {
-        private readonly ILogger<GetUser> _logger;
-
-        public GetUser(ILogger<GetUser> log)
-        {
-            _logger = log;
-        }
-
         [FunctionName("GetUser")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiParameter(name: "userID", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Name** parameter")]
@@ -31,7 +24,6 @@ namespace Authentificator.Functions
                 ConnectionStringSetting = "CosmosDBConnectionString",
                 PartitionKey = "{userID}", Id = "{userID}")] User user)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
             return new OkObjectResult(user);
         }
     }
