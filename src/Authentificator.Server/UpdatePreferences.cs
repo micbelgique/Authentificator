@@ -23,7 +23,7 @@ namespace Authentificator.Functions
         [return: CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")]
         public static async Task<User> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "settings/preferences/{userId}")] HttpRequest req,
-            [CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString", PartitionKey = "{userId}", Id = "{userId}")] User user)
+            [CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString", PartitionKey = "pk", Id = "{userId}")] User user)
         {
             var requestBody = await req.ReadAsStringAsync();
             var registerRequest = JsonConvert.DeserializeObject<UpdatePreferencesRequest>(requestBody);

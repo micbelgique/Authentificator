@@ -109,5 +109,11 @@ namespace Authentificator.Services
             }
             return Guid.Empty;
         }
+
+        public static async Task DeletePerson(string personGroupId, Guid personId)
+        {
+            await FaceClient.PersonGroupPerson.DeleteAsync(personGroupId, personId);
+        }
+
     }
 }

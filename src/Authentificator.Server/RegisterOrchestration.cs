@@ -43,7 +43,7 @@ namespace Authentificator.Functions
                 throw new Exception("Not enough good images");
             }
             await context.CallActivityAsync("RegisterOrchestration_AddFacesToPerson", (personGroupId, personId, filteredImages));
-            var avatarUrl = await context.CallActivityAsync<string>("RegisterOrchestration_CreateAvatar", userId);
+            var avatarUrl = await context.CallActivityAsync<string>("RegisterOrchestration_CreateAvatar", userId.ToString());
             await Task.WhenAll(new[] {
                 context.CallActivityAsync("RegisterOrchestration_TrainPersonGroup", personGroupId),
                 context.CallActivityAsync("RegisterOrchestration_CreatePersonDB", (personGroupId, personId, userId, avatarUrl))
@@ -99,7 +99,7 @@ namespace Authentificator.Functions
         public static User CreatePersonDB([ActivityTrigger] IDurableActivityContext context)
         {
             var (personGroupId, personId, userId, avatarUrl) = context.GetInput<(string, Guid, Guid, string)>();
-            var newUser = new User { Id = userId, PersonId = personId, PersonGroupId = personGroupId, AvatarUrl = avatarUrl };
+            var newUser = new User { Id = userId, PersonId = personId, PersonGroupId = personGroupId, AvatarUrl = avatarUrl, Created = DateTime.UtcNow };
             return newUser;
 
         }

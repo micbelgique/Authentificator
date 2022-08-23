@@ -22,7 +22,7 @@ namespace Authentificator.Functions
                 databaseName: "AuthentificatorDB",
                 collectionName: "Persons",
                 ConnectionStringSetting = "CosmosDBConnectionString",
-                PartitionKey = "{userID}", Id = "{userID}")] User user)
+                PartitionKey = "pk", Id = "{userID}")] User user)
         {
             return new OkObjectResult(user);
         }

@@ -10,5 +10,7 @@ namespace Authentificator.Models
         public string PersonGroupId { get; set; }
         public string FavouriteCoffee { get; set; } = "";
         public string AvatarUrl { get; set; } = "";
+        public DateTime Created { get; set; }
+        public string Pk { get; } = "pk";
     }
 }
