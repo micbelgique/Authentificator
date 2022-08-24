@@ -12,7 +12,7 @@ namespace Authentificator.Functions
     public class CleanUpUsers
     {
         [FunctionName("CleanUpUsers")]
-        public static async Task RunAsync([TimerTrigger("0 0 3 * * 1-5", RunOnStartup = true)] TimerInfo myTimer, ILogger log,
+        public static async Task RunAsync([TimerTrigger("0 0 3 * * 1-5")] TimerInfo myTimer, ILogger log,
                     [CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")] DocumentClient client)
         {
             var collectionUri = UriFactory.CreateDocumentCollectionUri("AuthentificatorDB", "Persons");
