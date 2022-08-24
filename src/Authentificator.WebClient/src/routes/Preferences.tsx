@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material"
 import { useSnackbar } from "notistack"
 import { useEffect, useState } from "react"
@@ -19,6 +20,7 @@ import { getProfile, updateProfile } from "../services/api"
 export default function Preferences() {
   const [userId, setUserId] = useSessionStorage<string>("userId", "")
   const [favouriteCoffee, setFavouriteCoffee] = useState("")
+  const [name, setName] = useState("")
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
@@ -29,17 +31,21 @@ export default function Preferences() {
       getProfile(userId).then((user) => {
         setUser(user)
         setFavouriteCoffee(user.favouriteCoffee)
+        setName(user.name)
         setIsLoading(false)
       })
     }
   }, [userId])
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeFavouriteCoffee = (event: SelectChangeEvent) => {
     setFavouriteCoffee(event.target.value as string)
+  }
+  const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
   }
 
   const handleSubmit = async () => {
-    await updateProfile(userId, { favouriteCoffee })
+    await updateProfile(userId, { favouriteCoffee, name })
     enqueueSnackbar("Preferences updated", { variant: "success" })
     setUserId("")
     navigate("/")
@@ -62,26 +68,23 @@ export default function Preferences() {
           </Box>
         </Grid>
         <Grid item>
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="favoutite-coffee-label">Favourite coffee</InputLabel>
             <Select
               labelId="favourite-coffee-label"
               id="favourite-coffee-select"
               value={favouriteCoffee}
               label="Favourite coffee"
-              onChange={handleChange}
+              onChange={handleChangeFavouriteCoffee}
             >
               <MenuItem value={""}>None</MenuItem>
               <MenuItem value={"cofee"}>Coffee</MenuItem>
             </Select>
           </FormControl>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            type="submit"
-            sx={{ mt: 1 }}
-          >
+          <br />
+          <TextField label="Name" value={name} onChange={handleChangeName} sx={{ mb: 2 }} />
+          <br />
+          <Button variant="contained" color="primary" onClick={handleSubmit} type="submit">
             Submit
           </Button>
         </Grid>

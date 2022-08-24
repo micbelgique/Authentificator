@@ -24,7 +24,7 @@ namespace Authentificator.Functions
                 ConnectionStringSetting = "CosmosDBConnectionString",
                 PartitionKey = "pk", Id = "{userID}")] User user)
         {
-            return new OkObjectResult(user);
+            return new OkObjectResult(new UserDTO(user));
         }
     }
 }

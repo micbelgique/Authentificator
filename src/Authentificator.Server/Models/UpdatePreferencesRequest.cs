@@ -7,5 +7,6 @@ namespace Authentificator.Models
     {
         public Guid UserId { get; set; }
         public string FavouriteCoffee { get; set; }
+        public string Name { get; set; }
     }
 }

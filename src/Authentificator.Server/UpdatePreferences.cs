@@ -29,6 +29,7 @@ namespace Authentificator.Functions
             var registerRequest = JsonConvert.DeserializeObject<UpdatePreferencesRequest>(requestBody);
 
             user.FavouriteCoffee = registerRequest.FavouriteCoffee;
+            user.Name = registerRequest.Name;
 
             return user;
         }
