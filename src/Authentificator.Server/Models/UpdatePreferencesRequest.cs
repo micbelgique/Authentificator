@@ -9,5 +9,6 @@ namespace Authentificator.Models
         public string FavouriteCoffee { get; set; }
         public string Name { get; set; }
         public bool IsPermanent { get; set; }
+        public string AvatarUrl { get; set; }
     }
 }

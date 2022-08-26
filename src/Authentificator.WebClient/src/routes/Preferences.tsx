@@ -24,6 +24,7 @@ export default function Preferences() {
   const [favouriteCoffee, setFavouriteCoffee] = useState("")
   const [name, setName] = useState("")
   const [isPermanent, setIsPermanent] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState("")
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
@@ -36,6 +37,7 @@ export default function Preferences() {
         setFavouriteCoffee(user.favouriteCoffee)
         setName(user.name)
         setIsPermanent(user.isPermanent)
+        setAvatarUrl(user.avatarUrl)
         setIsLoading(false)
       })
     }
@@ -52,8 +54,13 @@ export default function Preferences() {
     setIsPermanent(event.target.checked)
   }
 
+  const handleRandomAvatar = () => {
+    const seed = Math.floor(Math.random() * 10000000)
+    setAvatarUrl(`https://avatars.dicebear.com/api/big-smile/${seed.toString(16)}.svg`)
+  }
+
   const handleSubmit = async () => {
-    await updateProfile(userId, { favouriteCoffee, name, isPermanent })
+    await updateProfile(userId, { favouriteCoffee, name, isPermanent, avatarUrl })
     enqueueSnackbar("Preferences updated", { variant: "success" })
     setUserId("")
     navigate("/")
@@ -72,8 +79,11 @@ export default function Preferences() {
       <Grid container direction="row" spacing={4}>
         <Grid item>
           <Box sx={{ height: "10em", width: "10em" }}>
-            <img src={user?.avatarUrl} style={{ height: "auto", width: "100%" }} alt="Avatar" />
+            <img src={avatarUrl} style={{ height: "auto", width: "100%" }} alt="Avatar" />
           </Box>
+          <Button variant="contained" onClick={handleRandomAvatar}>
+            Regenerate
+          </Button>
         </Grid>
         <Grid item>
           <TextField label="Name" value={name} onChange={handleChangeName} sx={{ mb: 2 }} />
