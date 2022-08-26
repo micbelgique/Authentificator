@@ -68,6 +68,8 @@ export default function Preferences() {
           </Box>
         </Grid>
         <Grid item>
+          <TextField label="Name" value={name} onChange={handleChangeName} sx={{ mb: 2 }} />
+          <br />
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="favoutite-coffee-label">Favourite coffee</InputLabel>
             <Select
@@ -85,8 +87,6 @@ export default function Preferences() {
               <MenuItem value={"doppio"}>Doppio</MenuItem>
             </Select>
           </FormControl>
-          <br />
-          <TextField label="Name" value={name} onChange={handleChangeName} sx={{ mb: 2 }} />
           <br />
           <Button variant="contained" color="primary" onClick={handleSubmit} type="submit">
             Submit
