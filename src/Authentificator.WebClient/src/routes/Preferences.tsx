@@ -16,7 +16,6 @@ import { useSnackbar } from "notistack"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import useSessionStorage from "../hooks/useSessionStorage"
-import User from "../models/user"
 import { getProfile, updateProfile } from "../services/api"
 
 export default function Preferences() {
@@ -25,7 +24,6 @@ export default function Preferences() {
   const [name, setName] = useState("")
   const [isPermanent, setIsPermanent] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState("")
-  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
@@ -33,7 +31,6 @@ export default function Preferences() {
   useEffect(() => {
     if (userId) {
       getProfile(userId).then((user) => {
-        setUser(user)
         setFavouriteCoffee(user.favouriteCoffee)
         setName(user.name)
         setIsPermanent(user.isPermanent)
