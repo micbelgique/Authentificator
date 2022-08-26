@@ -30,6 +30,7 @@ namespace Authentificator.Functions
 
             user.FavouriteCoffee = registerRequest.FavouriteCoffee;
             user.Name = registerRequest.Name;
+            user.IsPermanent = registerRequest.IsPermanent;
 
             return user;
         }

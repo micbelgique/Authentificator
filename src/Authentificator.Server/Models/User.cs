@@ -11,6 +11,7 @@ namespace Authentificator.Models
         public string Name { get; set; } = "";
         public string FavouriteCoffee { get; set; } = "";
         public string AvatarUrl { get; set; } = "";
+        public bool IsPermanent { get; set; } = false;
         public DateTime Created { get; set; }
         public string Pk { get; } = "pk";
     }

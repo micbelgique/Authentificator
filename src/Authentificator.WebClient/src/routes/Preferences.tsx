@@ -2,12 +2,14 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   Grid,
   InputLabel,
   LinearProgress,
   MenuItem,
   Select,
   SelectChangeEvent,
+  Switch,
   TextField,
 } from "@mui/material"
 import { useSnackbar } from "notistack"
@@ -21,6 +23,7 @@ export default function Preferences() {
   const [userId, setUserId] = useSessionStorage<string>("userId", "")
   const [favouriteCoffee, setFavouriteCoffee] = useState("")
   const [name, setName] = useState("")
+  const [isPermanent, setIsPermanent] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
@@ -32,6 +35,7 @@ export default function Preferences() {
         setUser(user)
         setFavouriteCoffee(user.favouriteCoffee)
         setName(user.name)
+        setIsPermanent(user.isPermanent)
         setIsLoading(false)
       })
     }
@@ -44,8 +48,12 @@ export default function Preferences() {
     setName(event.target.value)
   }
 
+  const handleChangeIsPermanent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPermanent(event.target.checked)
+  }
+
   const handleSubmit = async () => {
-    await updateProfile(userId, { favouriteCoffee, name })
+    await updateProfile(userId, { favouriteCoffee, name, isPermanent })
     enqueueSnackbar("Preferences updated", { variant: "success" })
     setUserId("")
     navigate("/")
@@ -87,6 +95,11 @@ export default function Preferences() {
               <MenuItem value={"doppio"}>Doppio</MenuItem>
             </Select>
           </FormControl>
+          <br />
+          <FormControlLabel
+            control={<Switch checked={isPermanent} onChange={handleChangeIsPermanent} />}
+            label="Permanent"
+          />
           <br />
           <Button variant="contained" color="primary" onClick={handleSubmit} type="submit">
             Submit

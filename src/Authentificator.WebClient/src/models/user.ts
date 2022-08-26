@@ -3,4 +3,5 @@ export default interface User {
   name: string
   favouriteCoffee: string
   avatarUrl: string
+  isPermanent: boolean
 }

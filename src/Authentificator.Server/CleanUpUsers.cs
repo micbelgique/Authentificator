@@ -12,13 +12,15 @@ namespace Authentificator.Functions
     public class CleanUpUsers
     {
         [FunctionName("CleanUpUsers")]
-        public static async Task RunAsync([TimerTrigger("0 0 3 * * 1-5")] TimerInfo myTimer, ILogger log,
+        public static async Task RunAsync([TimerTrigger("0 0 3 * * 1-5", RunOnStartup = true)] TimerInfo myTimer, ILogger log,
                     [CosmosDB(databaseName: "AuthentificatorDB", collectionName: "Persons", ConnectionStringSetting = "CosmosDBConnectionString")] DocumentClient client)
         {
             var collectionUri = UriFactory.CreateDocumentCollectionUri("AuthentificatorDB", "Persons");
 
+
+            var querySql = "SELECT * FROM c WHERE c.IsPermanent = false";
             // TODO: add filter
-            var query = client.CreateDocumentQuery<Models.User>(collectionUri, new FeedOptions { MaxItemCount = -1, PartitionKey = new PartitionKey("pk") })
+            var query = client.CreateDocumentQuery<Models.User>(collectionUri, querySql, new FeedOptions { MaxItemCount = -1, PartitionKey = new PartitionKey("pk") })
                .AsQueryable();
 
             var tasks = new List<Task>();

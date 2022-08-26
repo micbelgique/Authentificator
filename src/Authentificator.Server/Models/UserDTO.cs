@@ -10,6 +10,7 @@ namespace Authentificator.Models
         public string FavouriteCoffee { get; set; } = "";
         public string AvatarUrl { get; set; } = "";
         public DateTime Created { get; set; }
+        public bool IsPermanent { get; set; } = false;
 
         public UserDTO(User user)
         {
@@ -19,6 +20,7 @@ namespace Authentificator.Models
             this.FavouriteCoffee = user.FavouriteCoffee;
             this.AvatarUrl = user.AvatarUrl;
             this.Created = user.Created;
+            this.IsPermanent = user.IsPermanent;
         }
     }
 
