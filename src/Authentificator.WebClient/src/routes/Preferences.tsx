@@ -78,7 +78,11 @@ export default function Preferences() {
               onChange={handleChangeFavouriteCoffee}
             >
               <MenuItem value={""}>None</MenuItem>
-              <MenuItem value={"cofee"}>Coffee</MenuItem>
+              <MenuItem value={"coffee"}>Coffee</MenuItem>
+              <MenuItem value={"longCoffee"}>Long Coffee</MenuItem>
+              <MenuItem value={"espresso"}>Espresso</MenuItem>
+              <MenuItem value={"doubleEspresso"}>Double Espresso</MenuItem>
+              <MenuItem value={"doppio"}>Doppio</MenuItem>
             </Select>
           </FormControl>
           <br />
