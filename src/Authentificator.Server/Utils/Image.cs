@@ -17,7 +17,7 @@ namespace Authentificator.Utils
 
         public static byte[] FromB64ToBytes(string image)
         {
-            var reg = new Regex(@"/^data:image\/\w+;base64,/");
+            var reg = new Regex(@"^data:image\/\w+;base64,");
             image = reg.Replace(image, "");
             return Convert.FromBase64String(image);
         }
