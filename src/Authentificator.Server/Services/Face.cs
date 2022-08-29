@@ -86,7 +86,7 @@ namespace Authentificator.Services
 
         public static async Task<Guid> IdentifyPerson(string personGroupId, byte[] image)
         {
-            List<DetectedFace> faces = await FilteredFaces(image);
+            List<DetectedFace> faces = await FilteredFaces(image, QualityForRecognition.Medium);
             if (faces.Count > 0)
             {
                 List<Guid> personIds = faces.Select(f => f.FaceId.Value).ToList();
